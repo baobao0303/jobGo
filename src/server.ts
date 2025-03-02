@@ -3,6 +3,7 @@ import 'dotenv/config'
 import appRoutes from './globals/routes/appRoutes'
 import { CustomError, NotFoundException } from './globals/cores/error.core'
 import HTTP_STATUS from './globals/constants/http.constant'
+
 class Server {
   private app: Application
 
@@ -36,7 +37,6 @@ class Server {
     // Global Error Handler => error, req, next, res
     this.app.use((error: any, req: Request, res: Response, next: NextFunction) => {
       if (error instanceof CustomError) {
-        console.log(error.message)
         res.status(error.statusCode).json({
           message: error.message
         })
@@ -46,6 +46,7 @@ class Server {
       })
     })
   }
+
 
   private listenServer() {
     const port = process.env.port || 5050

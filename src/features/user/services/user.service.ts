@@ -1,5 +1,4 @@
 import { User } from '@prisma/client'
-import { BadRequestException } from '~/globals/cores/error.core'
 import prisma from '~/prisma'
 
 class UserService {
