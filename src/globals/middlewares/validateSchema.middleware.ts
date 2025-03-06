@@ -3,10 +3,10 @@ import Joi, { Schema } from 'joi'
 import HTTP_STATUS from '../constants/http.constant'
 
 function formatErrorMessage(error: Joi.ValidationError) {
-  return error.details.map((item) => item.message)
+  return error.details.map((detail) => detail.message)
 }
 
-export function validatateSchema(schema: Schema) {
+export function validateSchema(schema: Schema) {
   return (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req.body, {
       abortEarly: false

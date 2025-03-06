@@ -1,8 +1,9 @@
 import express, { Application, NextFunction, Request, Response } from 'express'
-import 'dotenv/config'
+import cookieParser from 'cookie-parser'
 import appRoutes from './globals/routes/appRoutes'
 import { CustomError, NotFoundException } from './globals/cores/error.core'
 import HTTP_STATUS from './globals/constants/http.constant'
+import 'dotenv/config'
 
 class Server {
   private app: Application
@@ -20,6 +21,7 @@ class Server {
 
   private setupMiddleware() {
     this.app.use(express.json())
+    this.app.use(cookieParser())
   }
   private setupRoutes() {
     appRoutes(this.app) // /users, /jobs, etc
@@ -46,7 +48,6 @@ class Server {
       })
     })
   }
-
 
   private listenServer() {
     const port = process.env.port || 5050
