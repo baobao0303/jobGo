@@ -1,3 +1,4 @@
+
 import { Request, Response, NextFunction } from 'express'
 import { authService } from '../services/auth.service'
 import HTTP_STATUS from '~/globals/constants/http.constant'
@@ -50,6 +51,6 @@ class AuthController {
       return next(error)
     }
   }
-}
+
 
 export const authController: AuthController = new AuthController()
