@@ -13,10 +13,10 @@ export async function verifyUser(req: Request, res: Response, next: NextFunction
     const decoded = (await jwt.verify(token, process.env.JWT_SECRET!)) as UserPayload
     // console.log(decoded)s
 
-    const { name, email, role } = decoded
+    const { name, email, role, id } = decoded
 
     //3. assign verity token from step 2, assign it to req.current
-    req.currentUser = { name, email, role }
+    req.currentUser = { name, email, role, id }
     next()
   } catch (err) {
     next(new BadRequestException('Please login again!'))
