@@ -21,11 +21,11 @@ model User {
   password String
   role Role @default(CANDIDATE)
   status Boolean @default(true)
-  candidateProfile CadidateProfile?
+  candidateProfile CandidateProfile?
 }
 
 // One to One
-model CadidateProfile {
+model CandidateProfile {
   id Int @id @default(autoincrement())
   fullName  String
   gender Gender
@@ -47,14 +47,14 @@ model Language{
 }
 
 model CandidateLanguage{
-  candidateProfile CadidateProfile @relation(fields: [candidateProfileId], references: [id])
+  candidateProfile CandidateProfile @relation(fields: [candidateProfileId], references: [id])
   candidateProfileId Int
 
   language Language @relation(fields: [languageName],references: [name])
   languageName  String
 
   level Level @default(BASIC)
-  
+
   @@unique([candidateProfileId, languageName])
 }
 

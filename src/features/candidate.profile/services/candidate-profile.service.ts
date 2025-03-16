@@ -1,13 +1,13 @@
-import { CadidateProfile } from '@prisma/client'
+import { CandidateProfile, Level } from '@prisma/client'
 import { NotFoundException } from '~/globals/cores/error.core'
 import prisma from '~/prisma'
 import { ICandidateProfile } from '../interfaces/candidate-profile.interface'
 
 class CandidateProfileService {
-  public async create(requestBody: ICandidateProfile, currentUser: UserPayload): Promise<CadidateProfile> {
+  public async create(requestBody: ICandidateProfile, currentUser: UserPayload): Promise<CandidateProfile> {
     const { fullName, gender, phone, cv, birthdate, address } = requestBody
 
-    const candidateProfile = await prisma.cadidateProfile.create({
+    const candidateProfile = await prisma.candidateProfile.create({
       data: {
         fullName,
         gender,
@@ -21,15 +21,15 @@ class CandidateProfileService {
     return candidateProfile
   }
 
-  public async readAll(): Promise<CadidateProfile[]> {
-    const candidates: CadidateProfile[] = await prisma.cadidateProfile.findMany()
+  public async readAll(): Promise<CandidateProfile[]> {
+    const candidates: CandidateProfile[] = await prisma.candidateProfile.findMany()
 
     return candidates
   }
   // Only ADMIN or RECRUITER or owner of candidate profile
 
-  public async readOne(id: number): Promise<CadidateProfile> {
-    const candidates: CadidateProfile | null = await prisma.cadidateProfile.findUnique({
+  public async readOne(id: number): Promise<CandidateProfile> {
+    const candidates: CandidateProfile | null = await prisma.candidateProfile.findUnique({
       where: { id }
     })
 
@@ -39,14 +39,22 @@ class CandidateProfileService {
     return candidates
   }
 
-  public async update(id: number, requestBody: ICandidateProfile): Promise<CadidateProfile> {
+  public async readOneByUserId(userId: number): Promise<CandidateProfile> {
+    const candidate: CandidateProfile | null = await prisma.candidateProfile.findUnique({
+      where: { userId }
+    })
+    if (!candidate) throw new NotFoundException(`Candidate profile not found`)
+    return candidate
+  }
+
+  public async update(id: number, requestBody: ICandidateProfile): Promise<CandidateProfile> {
     const { fullName, gender, phone, cv, birthdate, address } = requestBody
 
     // 1. Make sure profile with id exits
     await this.readOne(id)
 
     // 2. Update
-    const profileUpdate: CadidateProfile = await prisma.cadidateProfile.update({
+    const profileUpdate: CandidateProfile = await prisma.candidateProfile.update({
       where: { id },
       data: {
         fullName,
@@ -64,7 +72,7 @@ class CandidateProfileService {
   public async remove(id: number): Promise<void> {
     await this.readOne(id)
 
-    await prisma.cadidateProfile.delete({
+    await prisma.candidateProfile.delete({
       where: { id }
     })
   }
