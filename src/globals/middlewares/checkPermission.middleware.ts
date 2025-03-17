@@ -8,7 +8,7 @@ export async function checkPermission(req: Request, res: Response, next: NextFun
   const candidateId = parseInt(req.params.id)
 
   try {
-    const candidateProfile = await prisma.cadidateProfile.findUnique({
+    const candidateProfile = await prisma.candidateProfile.findUnique({
       where: { id: candidateId }
     })
     if (userRole === 'ADMIN' || userRole === 'RECRUITER' || userId === candidateProfile?.userId) return next()
